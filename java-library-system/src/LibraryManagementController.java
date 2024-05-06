@@ -28,6 +28,7 @@ public class LibraryManagementController {
             e.printStackTrace();
         }
     }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             LibraryManagementView view = new LibraryManagementView();
@@ -36,6 +37,4 @@ public class LibraryManagementController {
             view.setVisible(true);
         });
     }
-
 }
-
