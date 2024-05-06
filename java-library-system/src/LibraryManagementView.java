@@ -9,11 +9,16 @@ import java.awt.event.MouseEvent;
 import javax.swing.RowFilter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Comparator;
 
 public class LibraryManagementView extends JFrame {
     private JTable generalTable;
     private JTable personalTable;
     private JTextField searchField;
+
+    // Track the number of clicks on each column header
+    private int[] generalColumnClicks;
+    private int[] personalColumnClicks;
 
     public LibraryManagementView() {
         setTitle("Library Management System");
@@ -63,6 +68,31 @@ public class LibraryManagementView extends JFrame {
         mainPanel.add(panel, BorderLayout.CENTER);
         mainPanel.add(searchPanel, BorderLayout.SOUTH);
         add(mainPanel);
+
+        // Initialize column click counters
+        generalColumnClicks = new int[generalTableModel.getColumnCount()];
+        personalColumnClicks = new int[personalTableModel.getColumnCount()];
+
+        // Add mouse listener to handle column header clicks
+        generalTable.getTableHeader().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int column = generalTable.columnAtPoint(e.getPoint());
+                generalColumnClicks[column]++;
+                int clickCount = generalColumnClicks[column];
+                sortTable(generalTable, generalSorter, column, clickCount);
+            }
+        });
+
+        personalTable.getTableHeader().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int column = personalTable.columnAtPoint(e.getPoint());
+                personalColumnClicks[column]++;
+                int clickCount = personalColumnClicks[column];
+                sortTable(personalTable, personalSorter, column, clickCount);
+            }
+        });
 
         // Add mouse listener to handle cell editing
         generalTable.addMouseListener(new MouseAdapter() {
@@ -135,6 +165,31 @@ public class LibraryManagementView extends JFrame {
             generalSorter.setRowFilter(compoundFilter);
             personalSorter.setRowFilter(compoundFilter);
         }
+    }
+
+    private void sortTable(JTable table, TableRowSorter<DefaultTableModel> sorter, int column, int clickCount) {
+        List<RowSorter.SortKey> sortKeys = new ArrayList<>(sorter.getSortKeys());
+        // Find existing sort key for this column
+        int index = findSortKeyIndex(sortKeys, column);
+        if (index != -1) {
+            sortKeys.remove(index);
+        }
+        // Add new sort key based on click count
+        if (clickCount % 3 == 1) {
+            sortKeys.add(new RowSorter.SortKey(column, SortOrder.ASCENDING));
+        } else if (clickCount % 3 == 2) {
+            sortKeys.add(new RowSorter.SortKey(column, SortOrder.DESCENDING));
+        }
+        sorter.setSortKeys(sortKeys);
+    }
+
+    private int findSortKeyIndex(List<RowSorter.SortKey> sortKeys, int column) {
+        for (int i = 0; i < sortKeys.size(); i++) {
+            if (sortKeys.get(i).getColumn() == column) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public DefaultTableModel getGeneralTableModel() {
