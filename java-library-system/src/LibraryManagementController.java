@@ -36,5 +36,10 @@ public class LibraryManagementController {
             controller.displayData("data/general_database.csv", "data/personal_database.csv");
             view.setVisible(true);
         });
+
+        SwingUtilities.invokeLater(() -> {
+            MainFrame mainFrame = new MainFrame();
+            mainFrame.setVisible(true);
+        });
     }
 }
