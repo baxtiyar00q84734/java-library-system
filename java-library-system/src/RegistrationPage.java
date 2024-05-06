@@ -1,23 +1,22 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RegistrationPage extends JPanel {
+    static List<String> usernames = new ArrayList<>();
+    static List<String> passwords = new ArrayList<>();
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton registerButton;
     private JButton switchToLoginButton;
-    private JRadioButton userRadioButton;
-    private JRadioButton adminRadioButton;
-    private ButtonGroup registrationTypeGroup;
     private MainFrame mainFrame;
-    private AccountManager accountManager;
 
     public RegistrationPage(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
-        setLayout(new GridLayout(5, 2, 5, 5)); // Updated grid layout to accommodate registration type selection
+        setLayout(new GridLayout(3, 2, 5, 5));
 
-        // Username and password fields
         add(new JLabel("Username:"));
         usernameField = new JTextField();
         usernameField.setPreferredSize(new Dimension(200, 25));
@@ -28,16 +27,6 @@ public class RegistrationPage extends JPanel {
         passwordField.setPreferredSize(new Dimension(200, 25));
         add(passwordField);
 
-        // Radio buttons for registration type
-        userRadioButton = new JRadioButton("User", true);
-        adminRadioButton = new JRadioButton("Admin");
-        registrationTypeGroup = new ButtonGroup();
-        registrationTypeGroup.add(userRadioButton);
-        registrationTypeGroup.add(adminRadioButton);
-        add(userRadioButton);
-        add(adminRadioButton);
-
-        // Register and back to login buttons
         registerButton = new JButton("Register");
         registerButton.addActionListener(this::performRegistration);
         add(registerButton);
@@ -50,14 +39,14 @@ public class RegistrationPage extends JPanel {
     private void performRegistration(ActionEvent e) {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
-        boolean isAdmin = adminRadioButton.isSelected();
 
-        // Here, you would typically handle saving this info to a secure location.
-        // This example just shows a success message.
-        if (isAdmin) {
-            JOptionPane.showMessageDialog(this, "Admin registration successful for: " + username);
+        if (!usernames.contains(username)) {
+            usernames.add(username);
+            passwords.add(password);
+            JOptionPane.showMessageDialog(this, "Registration successful for: " + username);
+            mainFrame.switchToLogin();
         } else {
-            JOptionPane.showMessageDialog(this, "User registration successful for: " + username);
+            JOptionPane.showMessageDialog(this, "Username already exists!", "Registration Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
