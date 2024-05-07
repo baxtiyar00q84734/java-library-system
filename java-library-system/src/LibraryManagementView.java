@@ -199,4 +199,30 @@ public class LibraryManagementView extends JFrame {
     public DefaultTableModel getPersonalTableModel() {
         return (DefaultTableModel) personalTable.getModel();
     }
+
+    // Method to add a book to the general table
+    public void addBookToGeneralTable(String[] bookData) {
+        DefaultTableModel generalTableModel = (DefaultTableModel) generalTable.getModel();
+        generalTableModel.addRow(bookData);
+    }
+
+    // Method to remove a book from the general table
+    public void removeBookFromGeneralTable(int rowIndex) {
+        DefaultTableModel generalTableModel = (DefaultTableModel) generalTable.getModel();
+        generalTableModel.removeRow(rowIndex);
+    }
+
+    // Method to modify a book in the general table
+    public void modifyBookInGeneralTable(int rowIndex, String[] newBookData) {
+        DefaultTableModel generalTableModel = (DefaultTableModel) generalTable.getModel();
+        for (int i = 0; i < newBookData.length; i++) {
+            generalTableModel.setValueAt(newBookData[i], rowIndex, i);
+        }
+    }
+
+    // Method to remove a review from the general table
+    public void removeReviewFromGeneralTable(int rowIndex, int columnIndex) {
+        DefaultTableModel generalTableModel = (DefaultTableModel) generalTable.getModel();
+        generalTableModel.setValueAt("", rowIndex, columnIndex);
+    }
 }

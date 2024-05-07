@@ -10,12 +10,20 @@ public class MainFrame extends JFrame {
     private LoginPage loginPage;
     private RegistrationPage registrationPage;
     private MainContentPanel mainContentPanel;
+    private AccountManager accountManager;
 
     public MainFrame() {
+
+
         super("Account Manager");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
         setLocationRelativeTo(null);
+
+        // Initialize accountManager
+        accountManager = new AccountManager();
+
+        AdminView adminView = new AdminView(accountManager);
 
         loginPage = new LoginPage(this);
         registrationPage = new RegistrationPage(this);
@@ -41,7 +49,11 @@ public class MainFrame extends JFrame {
         cardLayout.show(cardPanel, "MainContent");
     }
 
-    public static void main(String[] args) {
-        java.awt.EventQueue.invokeLater(() -> new MainFrame().setVisible(true));
-    }
+//    public static void main(String[] args) {
+//        java.awt.EventQueue.invokeLater(() -> new MainFrame().setVisible(true));
+//
+//        java.awt.EventQueue.invokeLater(() -> {
+//            new MainFrame().setVisible(true);
+//        });
+//    }
 }

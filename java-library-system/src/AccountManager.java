@@ -6,6 +6,10 @@ public class AccountManager {
 
     public AccountManager() {
         registeredAccounts = new ArrayList<>();
+        // Add some sample user accounts
+        registerAccount("admin", "admin123", true); // Admin account
+        registerAccount("user1", "user123", false); // Regular user account
+        registerAccount("user2", "user456", false); // Regular user account
     }
 
     // Method to register a new account
@@ -23,12 +27,8 @@ public class AccountManager {
         return false; // No matching account found
     }
 
-    // Additional method to check if a username already exists
-    public boolean isUsernameTaken(String username) {
-        for (UserAccount account : registeredAccounts) {
-            if (account.getUsername().equals(username)) {
-                return true; // Username already exists
-            }
-        }
-        return false; // Username is available
-    }}
+    // Method to delete a user account
+    public void deleteUserAccount(String username) {
+        registeredAccounts.removeIf(account -> account.getUsername().equals(username));
+    }
+}

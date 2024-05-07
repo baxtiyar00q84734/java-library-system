@@ -3,7 +3,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class AdminView extends JFrame {
-    public AdminView() {
+    private AccountManager accountManager;
+    public AdminView(AccountManager accountManager) {
         setTitle("Admin Dashboard");
         setSize(600, 400);
         setLocationRelativeTo(null);
@@ -35,6 +36,22 @@ public class AdminView extends JFrame {
         // Welcome label
         JLabel welcomeLabel = new JLabel("Welcome, Admin!", JLabel.CENTER);
         add(welcomeLabel, BorderLayout.CENTER);
+
+        // Button to delete user account
+        JButton deleteUserButton = new JButton("Delete User Account");
+        deleteUserButton.addActionListener(this::deleteUserAccount);
+        add(deleteUserButton, BorderLayout.SOUTH);
+    }
+
+    // Event handler for deleting a user account
+    private void deleteUserAccount(ActionEvent e) {
+        String username = JOptionPane.showInputDialog(this, "Enter username to delete:");
+        if (username != null && !username.isEmpty()) {
+            accountManager.deleteUserAccount(username);
+            JOptionPane.showMessageDialog(this, "User account deleted successfully.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid username.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // Event handlers for menu items
@@ -49,4 +66,6 @@ public class AdminView extends JFrame {
     private void openSettings(ActionEvent e) {
         JOptionPane.showMessageDialog(this, "Settings Panel");
     }
+
+
 }

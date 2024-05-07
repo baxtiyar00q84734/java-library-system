@@ -73,7 +73,7 @@ public class LoginPage extends JPanel {
 
     private void launchAdminView() {
         SwingUtilities.invokeLater(() -> {
-            AdminView adminView = new AdminView();  // Assuming you have an AdminView class
+            AdminView adminView = new AdminView(LibraryManagementController.accountManager);  // Assuming you have an AdminView class
             adminView.setVisible(true);
         });
     }
